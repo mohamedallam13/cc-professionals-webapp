@@ -1,0 +1,52 @@
+<script>
+    var currentProfessional = null;
+
+    function showContactForm(professional) {
+        currentProfessional = professional;
+        document.getElementById('contactForm').classList.add('shown');
+        event.stopPropagation();
+        document.getElementById('overlay').style.display = 'block'
+
+        // document.getElementById('contactName').value = '';
+        // document.getElementById('contactEmail').value = '';
+        // document.getElementById('contactAge').value = '';
+        // document.getElementById('contactMessage').value = '';
+    }
+
+    function submitContactRequest() {
+        var name = document.getElementById('contactName').value;
+        var email = document.getElementById('contactEmail').value;
+
+        if (!name || !email) {
+            alert('Please fill in all the fields.');
+            return;
+        }
+
+        var data = {
+            professional: currentProfessional,
+            name: name,
+            email: email
+        };
+
+        google.script.run.sendContactRequest(data);
+
+        // Reset the form
+        document.getElementById('contactForm').classList.remove('shown');
+        document.getElementById('contactName').value = '';
+        document.getElementById('contactEmail').value = '';
+    }
+
+
+    function closeForm(event) {
+        var contactForm = document.getElementById('contactForm');
+        // Check if form is shown
+        if (contactForm.classList.contains('shown')) {
+            // Check if the click was outside the form or on the close button
+            if (!event.target.closest('#contactForm') || event.target.id === 'closeForm') {
+                contactForm.classList.remove('shown');
+            }
+        }
+        document.getElementById('overlay').style.display = 'none'
+
+    }
+</script>

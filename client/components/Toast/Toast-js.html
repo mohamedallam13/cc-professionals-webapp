@@ -1,0 +1,42 @@
+<script>
+    var toastCount = 0;
+
+    function toast(message) {
+        // Create a div for the toast message
+        var toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+
+        // Adjust the position based on how many toasts are already visible
+        toast.style.bottom = `${20 + toastCount * 60}px`;  // Adjust 60 if you change the toast height
+
+        // Add it to the body
+        document.body.appendChild(toast);
+
+        // Increase the toast count
+        toastCount++;
+
+        // // After 3 seconds, start the fade-out and slide-up animation
+        // setTimeout(function () {
+        //     toast.classList.add('hide');
+        // }, 5000);
+
+        // After the animation is done, remove the toast from the body and decrease the toast count
+        setTimeout(function () {
+            toast.parentNode.removeChild(toast);
+            toastCount--;
+        }, 5000);  // Adjust this delay if necessary
+    }
+
+    // function keepToasting() {
+    //     for (i = 0; i < 6; i++) {
+    //         setTimeout(function () {
+    //             console.log(i)
+    //             toast('This is toast number ' + (i + 1));
+    //         }, i * 1500);
+    //     }
+    // }
+
+    // keepToasting()
+
+</script>

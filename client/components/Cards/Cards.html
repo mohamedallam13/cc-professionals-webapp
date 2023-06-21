@@ -1,0 +1,28 @@
+<? const defaultImg = "https://drive.google.com/file/d/1N_HfpUUnPl5ZC3nSXwPTMvP4xByfvSsC/view?usp=drive_link" ?>
+
+
+  <!-- Data fitting happens here -->
+  <? data.forEach(professionalObj=>{ ?>
+  <? if(!professionalObj.active) return ?>
+  <? const {userData} =   professionalObj ?>
+  <? const {firstName, lastName } = userData ?>
+  <? userData.name =  firstName + " " + lastName ?>
+  <? userData.email = userData["Contact Email"] ?>
+  <? userData.profession = userData["Qualification"].split(" ")[0] ?>
+  <? userData.contact = userData["Contact Phone Number"] ?>
+  <div class="professionals-card" onClick="showContactForm('<?= userData.name ?>')">
+    <img src="<?= HELPERS.getGDriveImgById(userData.currentImageFileID) ?>" alt="<?= userData.name ?>">
+    <h3>
+      <?= userData.name ?>
+    </h3>
+    <p>Profession:
+      <?= userData.profession ?>
+    </p>
+    <p>Contact:
+      <?= userData.contact ?>
+    </p>
+    <p>Email:
+      <?= userData.email ?>
+    </p>
+  </div>
+  <? }) ?>

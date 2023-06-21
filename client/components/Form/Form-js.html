@@ -1,0 +1,136 @@
+<script>
+    var currentProfessional = null;
+
+    function showContactForm(professional) {
+        resetForm()
+        console.log(professional)
+        currentProfessional = professional;
+        document.getElementById('contactForm').classList.add('shown');
+        event.stopPropagation();
+        document.getElementById('overlay').style.display = 'block'
+        document.getElementById('contacting').innerText = 'Contacting ' + professional;
+    }
+
+    function resetForm() {
+        document.querySelector('form').classList.remove('hidden');
+
+    }
+
+    function closeForm(event) {
+        var contactForm = document.getElementById('contactForm');
+        // Check if form is shown
+        if (contactForm.classList.contains('shown')) {
+            // Check if the click was outside the form or on the close button
+            if (!event.target.closest('#contactForm') || event.target.id === 'closeForm') {
+                hideForm()
+            }
+        }
+    }
+
+    function hideForm() {
+        var contactForm = document.getElementById('contactForm');
+        contactForm.classList.remove('shown');
+        document.getElementById('overlay').style.display = 'none'
+    }
+
+    function submitContactRequest() {
+        requestSuccess()
+        // const request = collectFormData();
+        // google.script.run.withSuccessHandler(requestSuccess).receiveRequest(request)
+    }
+
+    function requestSuccess() {
+        var form = document.querySelector('form');
+        var confirmation = document.querySelector('#confirmation'); // For success
+        // var confirmation = document.querySelector('#failure'); // For Failure
+        // var confirmation = document.querySelector('#loading'); // For Loading
+
+        form.classList.add('hidden');
+        confirmation.classList.remove('hidden');
+
+        // After the animation is done, remove the confirmation message from the body
+        setTimeout(function () {
+            confirmation.classList.add('hidden');
+            hideForm()
+        }, 4000);
+
+    }
+
+    function collectFormData() {
+        var formData = {};
+
+        // Collect and Validate Text Input Values
+        formData.name = document.getElementById('name').value;
+        if (!formData.name) {
+            alert('Please enter your name.');
+            return;
+        }
+
+        formData.email = document.getElementById('email').value;
+        if (!formData.email) {
+            alert('Please enter your email.');
+            return;
+        }
+
+        formData.age = document.getElementById('age').value;
+        if (!formData.age) {
+            alert('Please enter your age.');
+            return;
+        }
+
+        // Collect and Validate Radio Button Value
+        var genderElems = document.getElementsByName('gender');
+        var genderSelected = false;
+        for (var i = 0; i < genderElems.length; i++) {
+            if (genderElems[i].checked) {
+                formData.gender = genderElems[i].value;
+                genderSelected = true;
+                break;
+            }
+        }
+        if (!genderSelected) {
+            alert('Please select a gender.');
+            return;
+        }
+
+        // Collect and Validate Dropdown Value
+        formData.issueCategory = document.getElementById('issueCategory').value;
+        if (!formData.issueCategory) {
+            alert('Please select an issue category.');
+            return;
+        }
+
+        // Collect and Validate Checkbox Values
+        formData.issues = [];
+        var issueElems = document.getElementsByName('issues');
+        var issueSelected = false;
+        for (var i = 0; i < issueElems.length; i++) {
+            if (issueElems[i].checked) {
+                formData.issues.push(issueElems[i].value);
+                issueSelected = true;
+            }
+        }
+        if (!issueSelected) {
+            alert('Please select at least one issue.');
+            return;
+        }
+
+        // Collect and Validate Textarea Value
+        formData.message = document.getElementById('message').value;
+        if (!formData.message) {
+            alert('Please type a message.');
+            return;
+        }
+
+        console.log(formData);  // Log the formData object
+        return formData;
+    }
+
+    // Attach the function to form submit event
+    document.getElementById('contactFormQuestions').addEventListener('submit', function (e) {
+        e.preventDefault();  // Prevent the form from submitting normally
+        submitContactRequest();
+    });
+
+
+</script>

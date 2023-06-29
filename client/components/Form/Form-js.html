@@ -106,6 +106,7 @@
         const isValid = validateFormData(formData);
         if (!isValid) return
         getProfessionalsName(formData)
+        const fittedRequest = new FittedRequest(formData)
         displayRequestLoader()
 
         // setTimeout(function () {
@@ -115,12 +116,23 @@
         google.script.run
             .withSuccessHandler(requestSuccess)
             .withFailureHandler(requestFailure)
-            .receiveRequest(formData)
+            .receiveRequest(fittedRequest)
     }
 
-    function getProfessionalsName(formData) {
+    function getProfessionalsName() {
         const selectedProfessional = document.getElementById("contacting").innerText.replace("Contacting ", "")
-        formData.selectedProfessional = selectedProfessional
+        return selectedProfessional
+    }
+
+    function FittedRequest(formData) {
+        this.selectedProfessional = getProfessionalsName()
+        this.requesterName = formData.name
+        this.requesterEmail = formData.email
+        this.age = formData.age
+        this.genderchoice = formData.gender
+        this.category = formData.issueCategory
+        this.problemExplained = formData.message
+        this.topics = formData.issues
     }
 
 

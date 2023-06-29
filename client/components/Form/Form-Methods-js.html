@@ -1,0 +1,141 @@
+<script>
+    const COLLECTION_FUNCTIONS = {
+        text: {
+            getValue: function (id) {
+                return document.getElementById(id).value;
+            },
+            validate: function (value) {
+                if (value) return true
+                return
+            },
+            addInvalidClassToGroup: function (id) {
+                const element = document.getElementById(id)
+                element.classList.add("invalid");
+                element.addEventListener('change', function () {
+                    element.classList.remove('invalid');
+                })
+            },
+            clearValue: function (id) {
+                document.getElementById(id).value = "";
+            }
+        },
+        radioButton: {
+            getValue: function (id) {
+                let selectedGender = document.querySelector('input[name="gender"]:checked');
+                // If no gender is selected, selectedGender will be null
+                if (selectedGender) {
+                    return selectedGender.value; // Returns 'male' or 'female'
+                } else {
+                    return null; // or return a default value
+                }
+            },
+
+            validate: function (value) {
+                if (value) return true
+                return
+            },
+            addInvalidClassToGroup: function (radioGroupName) {
+                let radioGroup = document.getElementsByName(radioGroupName);
+                console.log(radioGroup)
+                // add 'invalid' class to all radio buttons in the group
+                for (let i = 0; i < radioGroup.length; i++) {
+                    radioGroup[i].classList.add('invalid-selections');
+
+                    // remove 'invalid' class when a radio button is selected
+                    radioGroup[i].addEventListener('change', function () {
+                        for (let j = 0; j < radioGroup.length; j++) {
+                            radioGroup[j].classList.remove('invalid-selections');
+                        }
+                    });
+                }
+            },
+            clearValue: function (radioGroupName) {
+                let radioGroup = document.getElementsByName(radioGroupName);
+
+                // set 'checked' property to false for all radio buttons in the group
+                for (let i = 0; i < radioGroup.length; i++) {
+                    radioGroup[i].checked = false;
+                }
+            }
+        },
+        dropdown: {
+            getValue: function (id) {
+                return document.getElementById(id).value;
+            },
+            validate: function (value) {
+                if (value) return true
+                return
+            },
+            addInvalidClassToGroup: function (id) {
+                const element = document.getElementById(id)
+                element.classList.add("invalid");
+                element.addEventListener('change', function () {
+                    element.classList.remove('invalid');
+                })
+
+            },
+            clearValue: function (id) {
+                document.getElementById(id).value = "";
+            }
+        },
+        checkbox: {
+            getValue: function (id) {
+                checkedArray = [];
+                var checkBoxElems = document.getElementsByName(id);
+                for (var i = 0; i < checkBoxElems.length; i++) {
+                    if (checkBoxElems[i].checked) {
+                        checkedArray.push(checkBoxElems[i].value);
+                    }
+                }
+                return checkedArray
+            },
+            validate: function (value) {
+                if (value?.length == 0) return
+                return true
+            },
+            addInvalidClassToGroup: function (checkboxGroupName) {
+                let checkboxGroup = document.getElementsByName(checkboxGroupName);
+                console.log(checkboxGroup)
+                // add 'invalid' class to all radio buttons in the group
+                for (let i = 0; i < checkboxGroup.length; i++) {
+                    checkboxGroup[i].classList.add('invalid-selections');
+
+                    // remove 'invalid' class when a radio button is selected
+                    checkboxGroup[i].addEventListener('change', function () {
+                        for (let j = 0; j < checkboxGroup.length; j++) {
+                            checkboxGroup[j].classList.remove('invalid-selections');
+                        }
+                    });
+                }
+            },
+            clearValue: function (checkboxGroupName) {
+                let checkboxGroup = document.getElementsByName(checkboxGroupName);
+
+                // set 'checked' property to false for all radio buttons in the group
+                for (let i = 0; i < checkboxGroup.length; i++) {
+                    checkboxGroup[i].checked = false;
+                }
+            }
+        },
+        textArea: {
+            getValue: function (id) {
+                return document.getElementById(id).value;
+            },
+            validate: function (value) {
+                if (value) return true
+                return
+            },
+            addInvalidClassToGroup: function (id) {
+                const element = document.getElementById(id)
+                element.classList.add("invalid");
+                element.addEventListener('change', function () {
+                    element.classList.remove('invalid');
+                })
+            },
+            clearValue: function (id) {
+                document.getElementById(id).value = "";
+            }
+        },
+    }
+
+</script>

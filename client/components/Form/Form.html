@@ -37,19 +37,20 @@
                     <div class="form-group">
                         <label>Gender</label><br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="genderOptions" id="male" value="option1">
+                            <input class="form-check-input" type="radio" name="gender" id="male" value="male">
                             <label class="form-check-label" for="male">Male</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="genderOptions" id="female"
-                                value="option2">
+                            <input class="form-check-input" type="radio" name="gender" id="female"
+                                value="female">
                             <label class="form-check-label" for="female">Female</label>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="issue">Issue Category</label>
-                        <select class="form-control" id="issue">
+                        <label for="issueCategory">Issue Category</label>
+                        <select value="" class="form-control" id="issueCategory">
+                            <option disabled selected value="">Please choose a category</option>
                             <option>Relationships</option>
                             <option>Mental Disorder</option>
                             <option>Family</option>
@@ -60,28 +61,28 @@
                         <label>Issues</label><br>
                         <div class="flex-container">
                             <div class="flex-item">
-                                <input type="checkbox" id="issue1" name="issue1">
+                                <input type="checkbox" id="issue1" value="issue1" name="issues">
                                 <label for="issue1">Issue 1</label>
                             </div>
                             <div class="flex-item">
-                                <input type="checkbox" id="issue2" name="issue2">
+                                <input type="checkbox" id="issue2" value="issue2" name="issues">
                                 <label for="issue2">Issue 2</label>
                             </div>
                             <div class="flex-item">
-                                <input type="checkbox" id="issue3" name="issue3">
+                                <input type="checkbox" id="issue3" value="issue3" name="issues">
                                 <label for="issue3">Issue 3</label>
                             </div>
                             <div class="flex-item">
-                                <input type="checkbox" id="issue3" name="issue3">
-                                <label for="issue3">Issue 3</label>
+                                <input type="checkbox" id="issue4" value="issue4" name="issues">
+                                <label for="issue4">Issue 4</label>
                             </div>
                             <div class="flex-item">
-                                <input type="checkbox" id="issue3" name="issue3">
-                                <label for="issue3">Issue 3</label>
+                                <input type="checkbox" id="issue5" value="issue5" name="issues">
+                                <label for="issue5">Issue 5</label>
                             </div>
                             <div class="flex-item">
-                                <input type="checkbox" id="issue3" name="issue3">
-                                <label for="issue3">Issue 3</label>
+                                <input type="checkbox" id="issue6" value="issue6" name="issues">
+                                <label for="issue6">Issue 6</label>
                             </div>
                             <!-- Continue with the rest of your checkboxes -->
                         </div>
@@ -97,7 +98,9 @@
                     <button type="submit" class="btn w-100">Submit</button>
                 </form>
 
+                <?!= _I(Loading) ?>
                 <?!= _I(Confirmed) ?>
+                <?!= _I(Failure) ?>
 
             </div>
         </div>

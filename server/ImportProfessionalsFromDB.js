@@ -1,5 +1,5 @@
 (function (root, factory) {
-    root.HANDLE_DB = factory();
+    root.HANDLE_PROFESSIONALS_DB = factory();
 })(this, function () {
 
     const { Toolkit } = CCLIBRARIES
@@ -27,5 +27,5 @@
 });
 
 function getProfessionalsData() {
-    return HANDLE_DB.getProfessionalsData()
+    return HANDLE_PROFESSIONALS_DB.getProfessionalsData()
 }

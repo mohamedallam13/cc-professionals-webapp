@@ -8,6 +8,13 @@
         "libraryId": "1M-HVmwVCGEcG5fEOfYPWkNat4p8LZidFiC6vsUBtGTt74gc19ASNmJRh",
         "developmentMode": true
       }
+    ],
+    "enabledAdvancedServices": [
+      {
+        "userSymbol": "Sheets",
+        "version": "v4",
+        "serviceId": "sheets"
+      }
     ]
   },
   "exceptionLogging": "STACKDRIVER",

@@ -1,5 +1,62 @@
+<? const FormMethodsJS = 'client/components/Form/Form-Methods-js' ?>
+<?!= _I(FormMethodsJS) ?>
 <script>
+
+    //Contact form, importing the methods to do the following:
+    // 1- Get values of form
+    // 2- Validate Values
+    // 3- Clear Values
+    // 4- Adding invalid class
+
+
     var currentProfessional = null;
+    const FORM_ELEMENTS = {
+        name: {
+            id: "name",
+            required: true,
+            type: "text",
+            validationMessage: "Please enter your name."
+        },
+        email: {
+            id: "email",
+            required: true,
+            type: "text",
+            validationMessage: "Please enter your email."
+        },
+        age: {
+            id: "age",
+            required: true,
+            type: "text",
+            regex: /^(1[3-9]|[2-9][0-9])$/,
+            validationMessage: "Please enter your age."
+        },
+        gender: {
+            id: "gender",
+            required: true,
+            type: "radioButton",
+            validationMessage: "Please select a gender."
+        },
+        issueCategory: {
+            id: "issueCategory",
+            required: true,
+            type: "dropdown",
+            validationMessage: "Please select an issue category."
+        },
+        issues: {
+            id: "issues",
+            required: true,
+            type: "checkbox",
+            validate: "array",
+            validationMessage: "Please select at least one issue."
+        },
+        message: {
+            id: "message",
+            required: true,
+            type: "textArea",
+            validationMessage: "Please select at least one issue."
+        },
+
+    }
 
     function showContactForm(professional) {
         resetForm()
@@ -12,8 +69,13 @@
     }
 
     function resetForm() {
-        document.querySelector('form').classList.remove('hidden');
+        clearFormValues()
+        clearValidationsFromForm()
+        showFormBody()
+    }
 
+    function showFormBody() {
+        document.querySelector('form').classList.remove('hidden');
     }
 
     function closeForm(event) {
@@ -28,22 +90,69 @@
     }
 
     function hideForm() {
+        clearValidationsFromForm()
+        clearFormValues()
         var contactForm = document.getElementById('contactForm');
         contactForm.classList.remove('shown');
         document.getElementById('overlay').style.display = 'none'
     }
 
     function submitContactRequest() {
-        requestSuccess()
-        // const request = collectFormData();
-        // google.script.run.withSuccessHandler(requestSuccess).receiveRequest(request)
+        // requestSuccess()
+        // requestFailure()
+
+        clearValidationsFromForm()
+        const formData = collectFormData();
+        const isValid = validateFormData(formData);
+        if (!isValid) return
+        getProfessionalsName(formData)
+        const fittedRequest = new FittedRequest(formData)
+        displayRequestLoader()
+
+        // setTimeout(function () {
+        //     requestSuccess()
+        // }, 4000);
+
+        google.script.run
+            .withSuccessHandler(requestSuccess)
+            .withFailureHandler(requestFailure)
+            .handleRequest(fittedRequest)
+    }
+
+    function getProfessionalsName() {
+        const selectedProfessional = document.getElementById("contacting").innerText.replace("Contacting ", "")
+        return selectedProfessional
+    }
+
+    function FittedRequest(formData) {
+        this.selectedProfessional = getProfessionalsName()
+        this.requesterName = formData.name
+        this.requesterEmail = formData.email
+        this.age = formData.age
+        this.genderchoice = formData.gender
+        this.category = formData.issueCategory
+        this.problemExplained = formData.message
+        this.topics = formData.issues
+    }
+
+
+    function displayRequestLoader() {
+        var form = document.querySelector('form');
+        var loading = document.querySelector('#loading'); // For Loading
+
+        form.classList.add('hidden');
+        loading.classList.remove('hidden');
+    }
+
+    function hideRequestLoader() {
+        var loading = document.querySelector('#loading'); // For Loading
+        loading.classList.add('hidden');
     }
 
     function requestSuccess() {
+        hideRequestLoader()
         var form = document.querySelector('form');
         var confirmation = document.querySelector('#confirmation'); // For success
-        // var confirmation = document.querySelector('#failure'); // For Failure
-        // var confirmation = document.querySelector('#loading'); // For Loading
 
         form.classList.add('hidden');
         confirmation.classList.remove('hidden');
@@ -53,77 +162,76 @@
             confirmation.classList.add('hidden');
             hideForm()
         }, 4000);
+    }
 
+    function requestFailure() {
+        hideRequestLoader()
+        var form = document.querySelector('form');
+        var failure = document.querySelector('#failure'); // For Failure
+
+        form.classList.add('hidden');
+        failure.classList.remove('hidden');
+
+        // After the animation is done, remove the confirmation message from the body
+        setTimeout(function () {
+            failure.classList.add('hidden');
+            hideForm()
+        }, 4000);
     }
 
     function collectFormData() {
         var formData = {};
 
-        // Collect and Validate Text Input Values
-        formData.name = document.getElementById('name').value;
-        if (!formData.name) {
-            alert('Please enter your name.');
-            return;
-        }
-
-        formData.email = document.getElementById('email').value;
-        if (!formData.email) {
-            alert('Please enter your email.');
-            return;
-        }
-
-        formData.age = document.getElementById('age').value;
-        if (!formData.age) {
-            alert('Please enter your age.');
-            return;
-        }
-
-        // Collect and Validate Radio Button Value
-        var genderElems = document.getElementsByName('gender');
-        var genderSelected = false;
-        for (var i = 0; i < genderElems.length; i++) {
-            if (genderElems[i].checked) {
-                formData.gender = genderElems[i].value;
-                genderSelected = true;
-                break;
-            }
-        }
-        if (!genderSelected) {
-            alert('Please select a gender.');
-            return;
-        }
-
-        // Collect and Validate Dropdown Value
-        formData.issueCategory = document.getElementById('issueCategory').value;
-        if (!formData.issueCategory) {
-            alert('Please select an issue category.');
-            return;
-        }
-
-        // Collect and Validate Checkbox Values
-        formData.issues = [];
-        var issueElems = document.getElementsByName('issues');
-        var issueSelected = false;
-        for (var i = 0; i < issueElems.length; i++) {
-            if (issueElems[i].checked) {
-                formData.issues.push(issueElems[i].value);
-                issueSelected = true;
-            }
-        }
-        if (!issueSelected) {
-            alert('Please select at least one issue.');
-            return;
-        }
-
-        // Collect and Validate Textarea Value
-        formData.message = document.getElementById('message').value;
-        if (!formData.message) {
-            alert('Please type a message.');
-            return;
-        }
+        Object.entries(FORM_ELEMENTS).forEach(([id, element]) => {
+            const { type } = element
+            formData[id] = COLLECTION_FUNCTIONS[type].getValue(id)
+        })
 
         console.log(formData);  // Log the formData object
         return formData;
+    }
+
+    function validateFormData(formData) {
+        let isValid = true
+        Object.entries(formData).forEach(([id, value]) => {
+            const elementConfig = FORM_ELEMENTS[id]
+            const { regex, required, type, validationMessage } = elementConfig;
+            const isValueValid = COLLECTION_FUNCTIONS[type].validate(value)
+            if (!isValueValid) {
+                toast(validationMessage)
+                isValid = false
+                COLLECTION_FUNCTIONS[type].addInvalidClassToGroup(id)
+                return
+            }
+            if (regex) {
+                const isRegexCorrect = regex.test(value)
+                if (!isRegexCorrect) {
+                    toast(validationMessage)
+                    isValid = false
+                    COLLECTION_FUNCTIONS[type].addInvalidClassToGroup(id)
+                    return
+                }
+            }
+        })
+        return isValid
+    }
+
+    function clearValidationsFromForm() {
+        var normalElements = document.querySelectorAll(".invalid");
+        for (var i = 0; i < normalElements.length; i++) {
+            normalElements[i].classList.remove("invalid");
+        }
+        var selectionElements = document.querySelectorAll(".invalid-selections");
+        for (var i = 0; i < selectionElements.length; i++) {
+            selectionElements[i].classList.remove("invalid-selections");
+        }
+    }
+
+    function clearFormValues() {
+        Object.entries(FORM_ELEMENTS).forEach(([id, element]) => {
+            const { type } = element
+            COLLECTION_FUNCTIONS[type].clearValue(id)
+        })
     }
 
     // Attach the function to form submit event

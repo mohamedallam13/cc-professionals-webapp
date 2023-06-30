@@ -2,11 +2,16 @@
     root.HANDLE_REQUESTS = factory()
 })(this, function () {
 
-    const { Toolkit, imp, FORMULATOR, SHEETS } = CCLIBRARIES
+    const { Toolkit, imp, FORMULATOR, SHEETS, SENDEMAILV2 } = CCLIBRARIES
     const { createFormsInstance } = FORMULATOR
-    const { readFromJSON, timestampCreate } = Toolkit
+    const { readFromJSON, timestampCreate, htmlToPlainText } = Toolkit
     const { createWriteArr, writeToSheet } = SHEETS
+    const { sendTemplateEmail } = SENDEMAILV2;
+
     const { requestsSheetOptions, FORM_ID, MASTER_INDEX_FILE_ID } = ENV
+
+    const TEST = false
+    const testEmail = "mh.allam@yahoo.com"
 
     let allFileIds
     let profDBObj
@@ -25,9 +30,9 @@
         const standardRequest = new StandardRequestObj(request)
         addToSheet(standardRequest);
         addToRequestsDB(standardRequest);
-
-        doubleEmailer.init(request);
+        const emailSuccessBool = sendEmails(standardRequest)
         saveAndCloseFiles()
+        if (!emailSuccessBool) return
         return true
     }
 
@@ -108,6 +113,32 @@
         profObj.requests.push(standardRequest);
     }
 
+    function sendEmails(standardRequest) {
+        const professionalEmailObj = new ProfessionalEmail(standardRequest);
+        const requesterEmailObj = new RequesterEmailObj(standardRequest)
+        const professionalEmailResponse = sendTemplateEmail(professionalEmailObj);
+        const requesterEmailResponse = sendTemplateEmail(requesterEmailObj);
+        if (!professionalEmailResponse && !requesterEmailResponse) return true
+        if (professionalEmailResponse) console.log("Professional Email failed with error: " + professionalEmailResponse)
+        if (requesterEmailResponse) console.log("Requester Email failed with error: " + requesterEmailResponse)
+        return
+    }
+
+    function ProfessionalEmail(standardRequest) {
+        const htmlTemplateFile = "htmlEmails/CCPNEmailToProfessionals"
+        this.htmlBody = _I(htmlTemplateFile, { profObj, standardRequest });
+        this.body = htmlToPlainText(this.htmlBody)
+
+    }
+
+    function RequesterEmailObj(standardRequest) {
+        const htmlTemplateFile = "htmlEmails/CCPNEmailToRequester"
+        this.htmlBody = _I(htmlTemplateFile, { profObj, standardRequest });
+        this.body = htmlToPlainText(this.htmlBody)
+
+    }
+
+
     function saveAndCloseFiles() {
         Toolkit.writeToJSON(allFileIds.availableRatingCodes, avaiableCodesArray);
         Toolkit.writeToJSON(allFileIds.requestsDB, requestsDBObj);
@@ -119,3 +150,10 @@
     }
 
 })
+
+function handleRequest(request) {
+    const request = {
+
+    }
+    return HANDLE_REQUESTS.handleRequest(request)
+}

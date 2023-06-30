@@ -3,14 +3,14 @@
 })(this, function () {
 
     const { Toolkit, imp, FORMULATOR, SHEETS, SENDEMAILV2 } = CCLIBRARIES
-    const { createFormsInstance } = FORMULATOR
-    const { readFromJSON, timestampCreate, htmlToPlainText } = Toolkit
-    const { createWriteArr, writeToSheet } = SHEETS
-    const { sendTemplateEmail } = SENDEMAILV2;
+    const { createFormsInstance } = FORMULATOR //Manage forms
+    const { readFromJSON, timestampCreate, htmlToPlainText } = Toolkit //Helpers to read and write to JSONs, convert HTML to text for email plain body andcreate timestamps
+    const { createWriteArr, writeToSheet } = SHEETS //To write to sheets
+    const { sendTemplateEmail } = SENDEMAILV2; //sending of emails
 
-    const { requestsSheetOptions, FORM_ID, MASTER_INDEX_FILE_ID } = ENV
+    const { requestsSheetOptions, FORM_ID, MASTER_INDEX_FILE_ID } = ENV //Environment parameters
 
-    const TEST = false
+    const TEST = true
     const testEmail = "mh.allam@yahoo.com"
 
     let allFileIds
@@ -60,9 +60,10 @@
     function StandardRequestObj(request) {
         const self = this;
         Object.assign(this, request)
+        this.topics = request.topics.join(", ")
         this.timestamp = timestampCreate(undefined, 'MM/dd/YYYY HH:mm:ss');
         this.ratingCode = generateCode()
-        this.prefilledLink = getPrefilledLink(self)
+        this.ratingLink = getPrefilledLink(self)
     }
 
     function getSheetObj(dbParams) {
@@ -104,7 +105,7 @@
     }
 
     function addToSheet(standardRequest) {
-        const writeArr = createWriteArr(standardRequest)
+        const writeArr = createWriteArr([standardRequest],sheetObj.header)
         writeToSheet(writeArr, sheetObj)
     }
 
@@ -125,17 +126,27 @@
     }
 
     function ProfessionalEmail(standardRequest) {
-        const htmlTemplateFile = "htmlEmails/CCPNEmailToProfessionals"
-        this.htmlBody = _I(htmlTemplateFile, { profObj, standardRequest });
+        const htmlTemplateFile = "server/htmlEmails/CCPNEmailToProfessionals"
+        this.testMode = TEST;
+        this.testEmail = testEmail
+        this.name = "Cairo Confessions Professionals Network";
+        this.htmlBody = _I(htmlTemplateFile, { profObjData: profObj.userData, standardRequest });
         this.body = htmlToPlainText(this.htmlBody)
-
+        this.to = profObj.userData["Contact Email"]
+        this.replyTo = standardRequest.requesterEmail
+        this.subject = "Dr. " + profObj.userData["First Name"] + ", You have a request!"
     }
 
     function RequesterEmailObj(standardRequest) {
-        const htmlTemplateFile = "htmlEmails/CCPNEmailToRequester"
-        this.htmlBody = _I(htmlTemplateFile, { profObj, standardRequest });
+        const htmlTemplateFile = "server/htmlEmails/CCPNEmailToRequester"
+        this.testMode = TEST;
+        this.testEmail = testEmail
+        this.name = "Cairo Confessions Professionals Network";
+        this.htmlBody = _I(htmlTemplateFile, { profObjData: profObj.userData, standardRequest });
         this.body = htmlToPlainText(this.htmlBody)
-
+        this.to = standardRequest.requesterEmail
+        this.replyTo = profObj.userData["Contact Email"]
+        this.subject = "Hello, you have made a request to be connected to a professional"
     }
 
 
@@ -152,8 +163,15 @@
 })
 
 function handleRequest(request) {
-    const request = {
-
-    }
+    // request = {
+    //     selectedProfessional: "David George",
+    //     requesterName: "Mohamed Allam",
+    //     requesterEmail: "mh.allam@yahoo.com",
+    //     age: "34",
+    //     genderchoice: "Male",
+    //     category: "Relationship issue",
+    //     problemExplained: "I am tired of having toxic relationships, I do not want to do this anymore, please make this stop",
+    //     topics: ["Issue 1, Issue 2, Issue 3"]
+    // }
     return HANDLE_REQUESTS.handleRequest(request)
 }

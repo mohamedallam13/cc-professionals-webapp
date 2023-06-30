@@ -116,7 +116,7 @@
         google.script.run
             .withSuccessHandler(requestSuccess)
             .withFailureHandler(requestFailure)
-            .receiveRequest(fittedRequest)
+            .handleRequest(fittedRequest)
     }
 
     function getProfessionalsName() {

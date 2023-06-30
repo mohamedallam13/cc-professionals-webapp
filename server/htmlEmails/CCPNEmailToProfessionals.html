@@ -16,7 +16,7 @@
         <img src="https://drive.google.com/uc?export=view&id=1VRfPa8Mgebx_pTNDadxJ1Ia_6dAcOv8E" alt="Your Banner"
             style="max-width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;">
 
-        <p style="margin-bottom: 15px; font-size: 18px; line-height: 1.8;">Dear Esteemed Professional,</p>
+        <p style="margin-bottom: 15px; font-size: 18px; line-height: 1.8;">Dear <?=  profObjData.fullName ?>,</p>
 
         <p style="margin-bottom: 15px; font-size: 18px; line-height: 1.8;">We trust this message finds you in good
             health and high spirits. A client from our platform has sent a request to connect with you. This individual,
@@ -24,18 +24,18 @@
             health.</p>
 
         <div style="margin-bottom: 15px; font-size: 18px; line-height: 1.8; background-color: #f5deb3; padding: 20px;">
-            <p style="font-weight: 700;">Email: {{ requesterEmail }}</p>
-            <p style="font-weight: 700;">Age: {{ age }}</p>
-            <p style="font-weight: 700;">Gender: {{ genderchoice }}</p>
-            <p style="font-weight: 700;">Category: {{ category }}</p>
+            <p style="font-weight: 700;">Email: <?= standardRequest.requesterEmail ?></p>
+            <p style="font-weight: 700;">Age: <?= standardRequest.age ?></p>
+            <p style="font-weight: 700;">Gender: <?= standardRequest.genderchoice ?></p>
+            <p style="font-weight: 700;">Category: <?= standardRequest.category ?></p>
             <p style="font-weight: 700;">Brief about the issue:</p>
-            <p style="font-weight: 700;">{{ problemExplained }}</p>
-            <p style="font-weight: 700;">Topics: {{ topics }}</p>
+            <p style="font-weight: 700;"><?= standardRequest.problemExplained ?></p>
+            <p style="font-weight: 700;">Topics: <?= standardRequest.topics ?></p>
         </div>
 
-        <p style="margin-bottom: 15px; font-size: 18px; line-height: 1.8;">We kindly ask you to reach out to this client
-            to discuss their needs and establish a beneficial collaboration. Please remember, it's imperative to reply
-            to this request, as it significantly contributes to the client's mental health journey.</p>
+        <p style="margin-bottom: 15px; font-size: 18px; line-height: 1.8;">We kindly ask you to reach out to this requester
+            to discuss their needs and establish book a session. Please remember, it's imperative to reply
+            to this request, as it significantly contributes to the requester's mental health journey.</p>
 
         <p style="margin-bottom: 15px; font-size: 18px; line-height: 1.8;">We appreciate your prompt attention to this
             matter. It's through professionals like you that we're able to make meaningful and life-changing
@@ -44,9 +44,9 @@
 
         <p style="margin-bottom: 15px; font-size: 18px; line-height: 1.8;">Warm regards,</p>
 
-        <p style="margin-bottom: 15px; font-size: 18px; line-height: 1.8;">[Your Name]</p>
+        <!-- <p style="margin-bottom: 15px; font-size: 18px; line-height: 1.8;">[Your Name]</p>
         <p style="margin-bottom: 15px; font-size: 18px; line-height: 1.8;">[Your Position]</p>
-        <p style="margin-bottom: 15px; font-size: 18px; line-height: 1.8;">[Your Contact Information]</p>
+        <p style="margin-bottom: 15px; font-size: 18px; line-height: 1.8;">[Your Contact Information]</p> -->
     </div>
 
     <div

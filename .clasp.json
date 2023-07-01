@@ -2,9 +2,7 @@
     "scriptId": "1CKJWP4Ar1-sP1cEN2QvqF1VMTL5l7nqZHzgczJrsAA0fikfH4SYpCzmx",
     "filePushOrder": [
         "server/ENV.js",
-        "server/legacyHelpers.js",
-        "server/RequestHandler.js",
-        "server/Emailer.js",
+        "server/HandleRequests.js",
         "server/DB.js",
         "server/Helpers.js",
         "server/Middleware.js",

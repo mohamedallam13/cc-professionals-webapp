@@ -1,0 +1,34 @@
+<script>
+    function showMoreInfo(card) {
+        card.querySelector('.front-face').style.transform = 'translateY(-100%)';
+        card.querySelector('.back-face').style.transform = 'translateY(0)';
+    }
+
+    function hideMoreInfo(card) {
+        card.querySelector('.front-face').style.transform = 'translateY(0)';
+        card.querySelector('.back-face').style.transform = 'translateY(100%)';
+    }
+
+    function addCardListeners() {
+        var cards = document.getElementsByClassName('professionals-card');
+
+        for (var i = 0; i < cards.length; i++) {
+            console.log(cards[i])
+            // cards[i].addEventListener('click', function (event) {
+            //     event.currentTarget.blur();
+            //     hideMoreInfo(event.currentTarget);
+            // });
+
+            cards[i].addEventListener('blur', function (event) {
+                // hide the back face when the mouse button is released
+                console.log("Run")
+                // console.log(event)
+                // var cardFront = event.currentTarget.querySelector('.front-face');
+                // var cardBack = event.currentTarget.querySelector('.back-face');
+                // console.log(cardFront)
+                // cardFront.style.transform = 'translateY(0)';
+                // cardBack.style.transform = 'translateY(100%)';
+            });
+        }
+    };
+</script>

@@ -1,56 +1,165 @@
 <style>
+  .professionals-card {
+    background: #FAFAFA;
+    /* Light grey color */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+    height: 500px;
+    width: 300px;
+    transition: transform 0.2s ease-in-out;
+    perspective: 1000px;
 
-  #card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    /* Ensures back-face stays within card */
   }
 
-  .professionals-card {
-        background: #FAFAFA;  /* Light grey color */
-        border-radius: 10px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        margin: 20px;
-        padding: 20px;
-        text-align: center;
-        width: 300px;
-        transition: transform 0.2s ease-in-out;
-      }
+  .professionals-card:hover {
+    transform: scale(1.05);
+  }
 
-      .professionals-card:hover {
-        transform: scale(1.05);
-      }
+  .professionals-card img {
+    margin-top: 5px;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
 
-      .professionals-card img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 10px;
-      }
+  .professionals-card h2 {
+    font-size: 20px;
+    color: #00695c;
+    /* Dark green color */
+    font-weight: 400;
+  }
 
-      .professionals-card h2 {
-        margin: 15px 0;
-        font-size: 20px;
-        color: #00695c;  /* Dark green color */
-        font-weight: 400;
-      }
+  /* cards containers section*/
+
+  .card-container {
+    position: relative;
+    height: calc(100% - 40px);
+    overflow: hidden;
+    /* Adjust based on your button's height */
+  }
+
+  .contact-button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* Make the button span the full width of the card */
+    height: 50px;
+    /* Adjust based on your preference */
+    border-radius: 0;
+    border-bottom: 0px;
+    border-right: 0px;
+    border-left: 0px;
+    border-color: transparent;
+    background: teal;
+    color: whitesmoke;
+    /* dark green color */
+    /* Remove border radius as the parent now controls this */
+    /* other styles... */
+  }
+
+  /* Front and back side */
+
+  .front-face,
+  .back-face {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease-in-out;
+    backface-visibility: hidden;
+  }
+
+  .front-face {
+    z-index: 2;
+  }
+
+  .back-face {
+    transform: translateY(100%);
+    overflow-y: scroll;
+  }
+
+  .info-container {
+    margin: 15px 0;
+  }
+
+  .info {
+    margin: 5px 0;
+    font-size: smaller;
+  }
+
+  p {
+    text-align: left;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: none;
+    font-size: 1.5em;
+    cursor: pointer;
+  }
+
+  /* .card-content {
+    width: 100%;
+    transition: transform .3s;
+    z-index: 1; 
+  }
+
+
+  .more-info {
+    display: none;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(100%);
+    transition: transform .3s;
+} */
+
+
+
+  /* .professionals-card.show-more .card-content {
+    transform: translateY(-100%);
+}
+
+.professionals-card.show-more .more-info {
+    display: block;
+    transform: translateY(0);
+}
+
+  .professionals-car.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  } */
 
   @media(min-width: 600px) {
-      .card {
-        width: calc(100% / 2 - 16px);
-      }
+    .card {
+      width: calc(100% / 2 - 16px);
     }
+  }
 
-    @media(min-width: 900px) {
-      .card {
-        width: calc(100% / 3 - 16px);
-      }
+  @media(min-width: 900px) {
+    .card {
+      width: calc(100% / 3 - 16px);
     }
+  }
 
-    @media(min-width: 600px) {
-      .card {
-        width: calc(100% / 2 - 16px);
-      }
+  @media(min-width: 600px) {
+    .card {
+      width: calc(100% / 2 - 16px);
     }
-
+  }
 </style>

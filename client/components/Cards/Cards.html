@@ -1,28 +1,50 @@
 <? const defaultImg = "https://drive.google.com/file/d/1N_HfpUUnPl5ZC3nSXwPTMvP4xByfvSsC/view?usp=drive_link" ?>
 
 
-  <!-- Data fitting happens here -->
-  <? data.forEach(professionalObj=>{ ?>
-  <? if(!professionalObj.active) return ?>
-  <? const {userData} =   professionalObj ?>
-  <? const {firstName, lastName } = userData ?>
-  <? userData.name =  firstName + " " + lastName ?>
-  <? userData.email = userData["Contact Email"] ?>
-  <? userData.profession = userData["Qualification"].split(" ")[0] ?>
-  <? userData.contact = userData["Contact Phone Number"] ?>
-  <div class="professionals-card" onClick="showContactForm('<?= userData.name ?>')">
-    <img src="<?= HELPERS.getGDriveImgById(userData.currentImageFileID) ?>" alt="<?= userData.name ?>">
-    <h3>
-      <?= userData.name ?>
-    </h3>
-    <p>Profession:
-      <?= userData.profession ?>
-    </p>
-    <p>Contact:
-      <?= userData.contact ?>
-    </p>
-    <p>Email:
-      <?= userData.email ?>
-    </p>
+<!-- Data fitting happens here -->
+<? data.forEach(professionalObj=>{ ?>
+<? if(!professionalObj.active) return ?>
+<? const {userData} =   professionalObj ?>
+<? const {firstName, lastName } = userData ?>
+<? userData.name =  firstName + " " + lastName ?>
+<? userData.email = userData["Contact Email"] ?>
+<? userData.profession = userData["Qualification"].split(" ")[0] ?>
+<? userData.contact = userData["Contact Phone Number"] ?>
+<? userData.topics = userData["Topics (Choose all that applies)"].split(",").slice(0, 5).join(","); ?>
+
+<!-- <div class="professionals-card" onClick="showContactForm('<?= userData.name ?>')"> -->
+<div class="professionals-card" onblur="hideMoreInfo(this)">
+  <div class="card-container">
+    <div class="front-face" onClick="showMoreInfo(this.parentNode)">
+      <img src="<?= HELPERS.getGDriveImgById(userData.currentImageFileID) ?>" alt="<?= userData.name ?>">
+      <div class="info-container">
+        <h3><?= userData.name ?></h3>
+        <h5><?= userData.profession ?></h5>
+        <b><p class="info">Location</p></b>
+        <p class="info"><?= userData["City/Governorate"] ?></p>
+        <b><p class="info">Topics</p></b>
+        <p class="info"><?= userData.topics ?></p>
+      </div>
+    </div>
+    <div class="back-face">
+      <!-- Close button -->
+      <!-- <button class="close-button" onClick="hideMoreInfo(this.parentNode.parentNode)">&times;</button> -->
+      <button type="button" class="close" aria-label="Close" onClick="hideMoreInfo(this.parentNode.parentNode)">
+        <span aria-hidden="true" id="closeForm" onClick="hideMoreInfo(this.parentNode.parentNode.parentNode)">&times;</span>
+      </button>
+      <!-- More detailed info here... -->
+      <div class="info-container">
+        <b><p class="info">Title</p></b>
+        <p class="info"><?= userData.Title ?></p>
+        <b><p class="info">Brief</p></b>
+        <p class="info"><?= userData["Brief (Background and Methods)"] ?></p>
+        <b><p class="info">Years of Experience</p></b>
+        <p class="info"><?= userData["Years of Experience"] ?></p>
+        <b><p class="info">Hourly Rate (EGP)</p></b>
+        <p class="info"><?= userData["Cost per session (Standardized in EGP per 1 hr)"] ?></p>
+      </div>
+    </div>
   </div>
-  <? }) ?>
+  <button class="contact-button" onClick="showContactForm('<?= userData.name ?>')">Contact</button>
+</div>
+<? }) ?>

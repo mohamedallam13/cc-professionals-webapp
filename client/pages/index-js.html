@@ -22,8 +22,9 @@
     }
 
     function setHTML(HTMLContent) {
-        $('#card-container').html(HTMLContent)
+        $('#cards-container').html(HTMLContent)
         hideAllClassElements(".card-loader")
+        // addCardListeners()
     }
 
     load()

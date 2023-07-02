@@ -19,6 +19,7 @@
 <!-- Javascript -->
 <? const indexJS = 'client/pages/index-js' ?>
 <? const FormJS = 'client/components/Form/Form-js' ?>
+<? const CardJS = 'client/components/Cards/Cards-js' ?>
 <? const ToastJS = 'client/components/Toast/Toast-js' ?>
 
 
@@ -54,7 +55,7 @@
 
   <div class="content-container">
     <?!= _I(Navbar) ?>
-    <div id="card-container">
+    <div id="cards-container">
       <!-- Data is added to this div -->
       <?!= _I(CardsLoader) ?>
     </div>
@@ -70,6 +71,7 @@
 
 <?!= _I(indexJS) ?>
 <?!= _I(FormJS) ?>
+<?!= _I(CardJS) ?>
 <?!= _I(ToastJS) ?>
 
 </html>
